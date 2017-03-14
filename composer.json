@@ -1,0 +1,8 @@
+{
+    "name": "abiusod/test",
+    "license": "WTFPL",
+    "require": {"fzaninotto/faker": "1.6.*"},
+    "autoload": {
+        "psr-4": {"ISL\\": "src/"}
+    },
+}
