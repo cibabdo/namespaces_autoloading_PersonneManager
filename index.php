@@ -6,34 +6,48 @@ use ISL\Manager\PersonneManager;
 $connex = new POO ('mysql:host=localhost;dbname=personne_poo', 'root', 'password'); //connection à la bb via PDO
 $personne = new PersonneManager($connex);
 
-$faker=  Faker\Factory::create('fr_BE');
-$personnes = [];
-/* Ajout */ /*A partir d'ici je suis un peu perdu ! Faut il un switch une boucle ?*/
-/* Moi je ferai un switch sur action ajout affichage update delete */
-/* Création Personnes dans tableau*/
-$personnes = new Personne (array(
-  'id'=>'',
-  'nom' => $faker->firstName,
-  'prenom' => $faker->lastName
-  'rue'=> $faker->streetName,
-  'numero'=> $faker->numberBetween,
-  'cp' => $faker->postcode,
-  'ville' => $faker->city,
-  'pays' => $faker->country,
-  'societe' => $faker->company)
-);
-$personne->create()
+/*
+Definir $_GET
+*/
 
-/* Affiche par id */
-$personne->retrieve($id));
 
-/* Affiche tout */
-$personne->retrieveAll();
+switch ($action) {
+  case 'add': /*ajout/*
+    $faker=  Faker\Factory::create('fr_BE');
+    $personnes = []; /*créer tableau personnes*/
+    for ($cpt=0; $cpt<10; $cpt++){
+      $personnes = new Personne (array(
+        'id'=>'',
+        'nom' => $faker->firstName,
+        'prenom' => $faker->lastName
+        'rue'=> $faker->streetName,
+        'numero'=> $faker->numberBetween,
+        'cp' => $faker->postcode,
+        'ville' => $faker->city,
+        'pays' => $faker->country,
+        'societe' => $faker->company)
+      );
+    }
+    for ($cpt=0; cpt<sizeof($personnes); $cpt++){
+        $personne->create($personnes);
+    }
+    break;
 
-/* Update */
-for ($c=0;$c<sizeof($personne);$c++){
-  $personne->update(array (
-    'id'=>$c,
+  case 'affiche_by_id':/* Affiche par id */
+    $id = 1; /*definir $_GET['id'] ??? */
+    $affiche_id = $personne->retrieve($id));
+    echo $affiche_id;
+    break;
+
+  case 'affiche_all':/* Affiche tout */
+    $affiche_tout = $personne->retrieveAll();
+    echo $affiche_tout;
+    break;
+
+  case 'update':/* Update */
+    for ($cpt=0;$cpt<sizeof($personne);$cpt++){
+    $personne->update(array (
+    'id'=>$cpt,
     'nom' => $faker->firstName,
     'prenom' => $faker->lastName
     'rue'=> $faker->streetName,
@@ -42,9 +56,14 @@ for ($c=0;$c<sizeof($personne);$c++){
     'ville' => $faker->city,
     'pays' => $faker->country,
     'societe' => $faker->company)
-  );
+    );
+    }
+    break;
+
+  case 'delete':/* Efface */
+    $id = 1; /*definir $_GET['id'] ??? */
+    $personne->delete($id));
+    break;
 }
 
-/* Efface */
-$personne->delete($id));
 ?>
